@@ -72,8 +72,6 @@ class Seq2Point:
             tf.summary.scalar(name + '/metrics/precision', self.precision),
             tf.summary.scalar(name + '/metrics/recall', self.recall),
             tf.summary.scalar(name + '/metrics/auc', self.auc),
-            # tf.summary.histogram(name+'/attention', self.att_value),
-            # tf.summary.histogram(name+'/final_out', self.final_out),
         ]
         summary_op = tf.summary.merge(summary)
         return summary_op
@@ -111,31 +109,12 @@ class Seq2Point:
             if self.m1 == "1":
                 print 'm1 is activated'
             self.embedding_catelevel1id = tf.get_variable('catelevel1_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_brandid = tf.get_variable('brand_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_itemid = tf.get_variable('item_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
             self.embedding_termid = tf.get_variable('term_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_userid = tf.get_variable('user_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_queryid = tf.get_variable('query_embedding', [100000, self.query_features_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_matchtype = tf.get_variable('matchtype_embedding', [100000, self.short_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_cateid = tf.get_variable('cate_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_triggerid = tf.get_variable('triggerid_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_age_class = tf.get_variable('age_class_embedding', [100000, self.short_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_baby_stage = tf.get_variable('baby_stage_embedding', [100000, self.short_dim], tf.float32, tf.random_normal_initializer())
-            #self.embedding_career_type = tf.get_variable('career_type_embedding', [100000, self.short_dim], tf.float32, tf.random_normal_initializer())
 
             catelevel1_emb = tf.nn.embedding_lookup(self.embedding_catelevel1id, self.Rcatelevel1_list%100000)
-            #brand_emb = tf.nn.embedding_lookup(self.embedding_brandid, self.Rbrand_list%100000)
             item_name_hash_emb = tf.nn.embedding_lookup(self.embedding_termid, self.Ritem_name_hash_list%100000)
             i2q_term_hash_emb = tf.nn.embedding_lookup(self.embedding_termid, self.Ri2q_term_hash_list%100000)
             query_hash_emb = tf.nn.embedding_lookup(self.embedding_termid, self.Rquery_hash_list%100000)
-
-            #X = tf.concat([catelevel1_emb, brand_emb, tf.reduce_mean(item_name_hash_emb, 2), tf.reduce_mean(i2q_term_hash_emb, 2), self.Ritem_features_list], axis=2)
-            
-            #user_emb = tf.nn.embedding_lookup(self.embedding_userid, self.Ruserid%100000)
-            #user_emb = tf.reshape(user_emb, [self.batch_size, self.feature_dim])
-
-            #query_emb = tf.nn.embedding_lookup(self.embedding_queryid, self.Rqid%100000)
-            #query_emb = tf.reshape(query_emb, [self.batch_size, self.query_features_dim])
 
             cate1_emb = tf.nn.embedding_lookup(self.embedding_catelevel1id, self.Rcateid1%100000)
             cate1_emb = tf.reshape(cate1_emb, [self.batch_size, self.feature_dim])
@@ -146,26 +125,6 @@ class Seq2Point:
             cate3_emb = tf.nn.embedding_lookup(self.embedding_catelevel1id, self.Rcateid3%100000)
             cate3_emb = tf.reshape(cate3_emb, [self.batch_size, self.feature_dim])
 
-            #matchtype_emb = tf.nn.embedding_lookup(self.embedding_matchtype, self.Rmatchtype%100000)
-            #matchtype_emb = tf.reshape(matchtype_emb, [self.batch_size, self.short_dim])
-
-            #cate_emb = tf.nn.embedding_lookup(self.embedding_cateid, self.Rcateid%100000)
-            #cate_emb = tf.reshape(cate_emb, [self.batch_size, self.feature_dim])
-
-            #trigger_emb = tf.nn.embedding_lookup(self.embedding_triggerid, self.Rtriggerid%100000)
-            #trigger_emb = tf.reshape(trigger_emb, [self.batch_size, self.feature_dim])
-
-            #age_class_emb = tf.nn.embedding_lookup(self.embedding_age_class, self.Rage_class%100000)
-            #age_class_emb = tf.reshape(age_class_emb, [self.batch_size, self.short_dim])
-
-            #baby_stage_emb = tf.nn.embedding_lookup(self.embedding_baby_stage, self.Rbaby_stage%100000)
-            #baby_stage_emb = tf.reshape(baby_stage_emb, [self.batch_size, self.short_dim])
-
-            #career_type_emb = tf.nn.embedding_lookup(self.embedding_career_type, self.Rcareer_type%100000)
-            #career_type_emb = tf.reshape(career_type_emb, [self.batch_size, self.short_dim])
-
-            #X = tf.concat([catelevel1_emb, brand_emb, tf.reduce_mean(item_name_hash_emb, 2), tf.reduce_mean(i2q_term_hash_emb, 2), self.Ritem_features_list], axis=2)
-            #self.X_last = tf.concat([self.Rquery_features, cate1_emb + cate2_emb + cate3_emb, tf.reduce_mean(query_hash_emb, 1)], axis=1)
             X = tf.concat([catelevel1_emb, tf.reduce_mean(item_name_hash_emb, 2), tf.reduce_mean(i2q_term_hash_emb, 2)], axis=2)
             self.X_last = tf.concat([(cate1_emb + cate2_emb + cate3_emb)/3, tf.reduce_mean(query_hash_emb, 1)], axis=1)
 
@@ -174,15 +133,10 @@ class Seq2Point:
             self.X1 = self.X[-1]
             self.X2 = self.X[-2]
 
-
-        #with tf.device('/cpu:0'):
             #####       Encoder Level       #####
             
             fw_cell = tf.contrib.rnn.GRUCell(num_units=self.rnn_cell_dim)
             bw_cell = tf.contrib.rnn.GRUCell(num_units=self.rnn_cell_dim)
-#            if self.is_train:
-#                fw_cell = tf.contrib.rnn.DropoutWrapper(fw_cell, output_keep_prob=0.9)
-#                bw_cell = tf.contrib.rnn.DropoutWrapper(bw_cell, output_keep_prob=0.9)
 
             bi_output, state_fw, state_bw = tf.contrib.rnn.static_bidirectional_rnn(fw_cell, bw_cell, self.X,
                                                                                     dtype=tf.float32)
@@ -211,20 +165,14 @@ class Seq2Point:
 
             self.final_out = tf.concat([state_fw, state_bw, att_outputs, self.X_last], 1)  # N, 3*D
 
-            #self.final_out = tf.concat([user_emb, state_fw, state_bw, self.X_last, matchtype_emb, cate_emb, trigger_emb, age_class_emb, baby_stage_emb, career_type_emb, self.Rxftrl_features], 1)  # N, 3*D        
-            #self.final_out = tf.concat([state_fw, state_bw, self.X_last], 1)  # N, 3*D        
-
             #####       Dense Classification    #####
             self.fc1 = tf.layers.dense(self.final_out, self.dense_dim, activation=tf.nn.relu, name='fc1', kernel_initializer = tf.random_normal_initializer())
             self.fc2 = tf.layers.dense(self.fc1, 2, activation=None, name='fc2')
-            #self.fc2 = tf.layers.dense(self.final_out, 2, activation=None, name='fc2')
             pred_logit = tf.nn.softmax(self.fc2)
             return pred_logit
 
     def __load_data__(self):
         # pos,neg sample combine     by muming
-#        if self.is_debug == True:
-#            self.table_name = "../data/"     
         if self.is_train:
             table = os.path.join(self.table_name, 'train/*.tf.*')
         else:
