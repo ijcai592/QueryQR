@@ -1,6 +1,6 @@
 # QueryQR
 
-Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. Suppose the download path is ~/ijcai592_dataset
+Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. Suppose the download path is: ~/ijcai592_dataset
 
 Then run: 
 ```bash
