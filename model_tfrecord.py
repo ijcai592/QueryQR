@@ -105,9 +105,6 @@ class Seq2Point:
         print('Build Graph')
 
         with tf.variable_scope('embedding', initializer=tf.zeros_initializer()):
-            print 'self.m1,self.m2,self.m3:',self.m1,self.m2,self.m3
-            if self.m1 == "1":
-                print 'm1 is activated'
             self.embedding_catelevel1id = tf.get_variable('catelevel1_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
             self.embedding_termid = tf.get_variable('term_embedding', [100000, self.feature_dim], tf.float32, tf.random_normal_initializer())
 
