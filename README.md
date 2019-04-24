@@ -2,7 +2,7 @@
 
 Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. Suppose the download path is: ~/ijcai592_dataset
 
-The data is scored as tfrecord format, features contain:
+The data is scored as the tfrecord format, with feature columns defined as:
 ```bash
 features={
    'user_id': tf.FixedLenFeature([1], tf.int64),
