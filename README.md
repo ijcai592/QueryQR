@@ -34,7 +34,7 @@ features={
    'xftrl_features': tf.FixedLenFeature([14], tf.float32)
 }
 ```
-where _click_ is the label, behavior features in the user feature field are extracted from _cate_list, catelevel1_list, item_list, item_features_list, time_list, action_list, item_name_hash_list, i2q_term_hash_list_. Other features in the user, item, context feature fields are extracted from the remaining feature colomns.
+where _click_ is the label, behavior features in the user feature field are extracted from _cate_list, catelevel1_list, item_list, item_features_list, time_list, action_list, item_name_hash_list, i2q_term_hash_list_. Other features in the user, item, context feature fields are extracted from the remaining feature columns.
 
 Then run: 
 ```bash
