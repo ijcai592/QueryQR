@@ -1,8 +1,6 @@
 # QueryQR
 
-Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. Suppose the download path is: ~/ijcai592_dataset
-
-The data is scored as the tfrecord format, with feature columns defined as:
+Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. The data is scored as the tfrecord format, with feature columns defined as:
 ```bash
 features={
    'user_id': tf.FixedLenFeature([1], tf.int64),
@@ -36,7 +34,7 @@ features={
 ```
 where _click_ is the label, behavior features in the user feature field are extracted from _cate_list, catelevel1_list, item_list, item_features_list, time_list, action_list, item_name_hash_list, i2q_term_hash_list_. Other features in the user, item, context feature fields are extracted from the remaining feature columns.
 
-Then run: 
+Suppose the download path is: ~/ijcai592_dataset, then run: 
 ```bash
 python train_tfrecord.py --buckets "~/ijcai592_dataset/" --checkpointDir "~/log/"
 ```
