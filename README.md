@@ -1,6 +1,6 @@
 # QueryQR
 
-Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. The data is scored as the tfrecord format, with feature columns defined as:
+Download datasets from https://pan.baidu.com/s/1xrH1Q_O4zGxMNUbwNITpyg. The data is stored as the tfrecord format, with feature columns defined as:
 ```bash
 features={
    'user_id': tf.FixedLenFeature([1], tf.int64),
